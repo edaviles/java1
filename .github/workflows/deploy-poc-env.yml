@@ -40,14 +40,19 @@ jobs:
           
   build-and-push-image:
     runs-on: ubuntu-latest
-    environment:
-      name: PoC
     if: ${{ success() }}
-    needs: [create-acr,create-resource-group]
+    needs: [create-acr]
     steps:
-      - uses: actions/checkout@v2
-      - name: Buid and Push Image
-        run: echo Buid and Push Image
+      - uses: actions/checkout@main
+      - uses: Azure/cli@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Create ACR
+        uses: Azure/cli@v1
+        with:
+          inlineScript: |
+            az acr build -t ${{ secrets.ACR_NAME }}.azurecr.io/javawebapp -r ${{ secrets.ACR_NAME }} .
 
   deploy-aks:
     runs-on: ubuntu-latest
@@ -105,6 +110,7 @@ jobs:
           WORKSPACE_ID=$(az resource show --resource-type Microsoft.OperationalInsights/workspaces --resource-group ${{ secrets.AZURE_RG }} --name ${{ secrets.WORKSPACE_NAME }} --query "id" -o tsv)
           echo $WORKSPACE_ID
           az aks enable-addons --resource-group ${{ secrets.AZURE_RG }} --name ${{ secrets.CLUSTER_NAME }} --addons monitoring --workspace-resource-id $WORKSPACE_ID
+  
   deploy-java-webapp:
     runs-on: ubuntu-latest
     environment:
