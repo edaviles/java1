@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: javawebapp
-        image: acraksworkshop.azurecr.io/javawebapp:latest
+        image: oapocjavaacr.azurecr.io/javawebapp:latest
         resources:
           requests:
             cpu: "1"
