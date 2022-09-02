@@ -117,6 +117,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: PoC
+      url: http://localhost/FlightBookingSystemSample
     if: ${{ success() }}
     needs: [enable-observability]
     steps:
