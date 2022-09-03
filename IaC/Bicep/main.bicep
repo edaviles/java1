@@ -87,7 +87,6 @@ resource sites_oa921309128_name_resource 'Microsoft.Web/sites@2022-03-01' = {
 resource sites_oa921309128_name_web 'Microsoft.Web/sites/config@2022-03-01' = {
   parent: sites_oa921309128_name_resource
   name: 'web'
-  location: location
   properties: {
     numberOfWorkers: 1
     defaultDocuments: [
