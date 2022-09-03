@@ -25,7 +25,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
     name: skuName
     capacity: skuCapacity
   }
-  kind: 'linux'
+  kind: 'app,linux'
   tags: {
     displayName: 'HostingPlan'
     ProjectName: appName
