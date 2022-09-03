@@ -14,7 +14,7 @@ param appName string = uniqueString(resourceGroup().id)
 param linuxFxVersion string = 'TOMCAT|9.0-jre8'
 
 resource serverfarms_ASP_pocjavazone_8c82_name_resource 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: appName
+  name: 'oasp-${appName}'
   location: location
   sku: {
     name: 'S1'
@@ -39,7 +39,7 @@ resource serverfarms_ASP_pocjavazone_8c82_name_resource 'Microsoft.Web/serverfar
 }
 
 resource sites_oa921309128_name_resource 'Microsoft.Web/sites@2022-03-01' = {
-  name: appName
+  name: 'oa-${appName}'
   location: location
   kind: 'app,linux'
   properties: {
@@ -85,7 +85,7 @@ resource sites_oa921309128_name_resource 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 resource sites_oa921309128_name_ftp 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  parent: appName
+  parent: sites_oa921309128_name_resource
   name: 'ftp'
   location: location
   properties: {
@@ -94,7 +94,7 @@ resource sites_oa921309128_name_ftp 'Microsoft.Web/sites/basicPublishingCredenti
 }
 
 resource sites_oa921309128_name_scm 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  parent: appName
+  parent: sites_oa921309128_name_resource
   name: 'scm'
   location: location
   properties: {
@@ -103,7 +103,7 @@ resource sites_oa921309128_name_scm 'Microsoft.Web/sites/basicPublishingCredenti
 }
 
 resource sites_oa921309128_name_web 'Microsoft.Web/sites/config@2022-03-01' = {
-  parent: appName
+  parent: sites_oa921309128_name_resource
   name: 'web'
   location: location
   properties: {
@@ -181,7 +181,7 @@ resource sites_oa921309128_name_web 'Microsoft.Web/sites/config@2022-03-01' = {
 
 resource sites_oa921309128_name_sites_oa921309128_name_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2022-03-01' = {
   parent: sites_oa921309128_name_resource
-  name: '${appName}.azurewebsites.net'
+  name: 'oa-${appName}.azurewebsites.net'
   location: location
   properties: {
     siteName: appName
