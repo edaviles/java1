@@ -23,9 +23,12 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   location: location
   sku: {
     name: skuName
+    tier: 'Standard'
+    size: 'S1'
+    family: 'S'
     capacity: skuCapacity
   }
-  kind: 'app,linux'
+  kind: 'linux'
   tags: {
     displayName: 'HostingPlan'
     ProjectName: appName
@@ -35,6 +38,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
 resource appService 'Microsoft.Web/sites@2020-06-01' = {
   name: webSiteName
   location: location
+  kind: 'app,linux'
   identity: {
     type: 'SystemAssigned'
   }
