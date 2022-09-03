@@ -49,7 +49,6 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
     serverFarmId: appServicePlan.id
     httpsOnly: false
     siteConfig: {
-      minTlsVersion: '1.2'
       linuxFxVersion: linuxFxVersion
     }
   }
