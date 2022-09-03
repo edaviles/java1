@@ -102,7 +102,7 @@ resource sites_oa921309128_name_web 'Microsoft.Web/sites/config@2022-03-01' = {
       'hostingstart.html'
     ]
     netFrameworkVersion: 'v4.0'
-    linuxFxVersion: 'TOMCAT|9.0-jre8'
+    linuxFxVersion: linuxFxVersion
     requestTracingEnabled: false
     remoteDebuggingEnabled: false
     httpLoggingEnabled: false
@@ -158,15 +158,5 @@ resource sites_oa921309128_name_web 'Microsoft.Web/sites/config@2022-03-01' = {
     functionsRuntimeScaleMonitoringEnabled: false
     minimumElasticInstanceCount: 0
     azureStorageAccounts: {}
-  }
-}
-
-resource sites_oa921309128_name_sites_oa921309128_name_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2022-03-01' = {
-  parent: sites_oa921309128_name_resource
-  name: 'oa-${appName}.azurewebsites.net'
-  location: location
-  properties: {
-    siteName: 'oa-${appName}'
-    hostNameType: 'Verified'
   }
 }
