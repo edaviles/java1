@@ -1,0 +1,31 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI/CD Java Weeb App
+
+# Controls when the workflow will run
+on:  workflow_dispatch
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  deploy-java-webapp:
+    runs-on: ubuntu-latest
+    environment:
+      name: PoC-AppService
+      url: http://localhost/FlightBookingSystemSample
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup Java 1.8.x
+      uses: actions/setup-java@v1
+      with:
+        # If your pom.xml <maven.compiler.source> version is not in 1.8.x,
+        # change the Java version to match the version in pom.xml <maven.compiler.source>
+        java-version: '1.8.x'
+    - name: Build with Maven
+      run: mvn package --file pom.xml
+    - name: Azure WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: oa-poc-javawebapp
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: my/target/*.war
