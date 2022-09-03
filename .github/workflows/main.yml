@@ -28,4 +28,4 @@ jobs:
       with:
         app-name: oa-poc-javawebapp
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: /hello_java/target/*.war
+        package: /home/runner/work/hello_java/hello_java/target/*.war
