@@ -1,4 +1,4 @@
-name: Deploy PoC Env
+name: Deploy PoC Env AKS
 
 on:
   workflow_dispatch:
