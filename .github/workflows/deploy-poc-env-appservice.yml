@@ -37,8 +37,7 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ secrets.AZURE_RG }}
-        template: ./IaC/ARM/azuredeploy.json
-        parameters: ./IaC/ARM/azuredeploy.parameters.json
+        template: ./IaC/Bicep/main.tf
                 
           
   deploy-java-webapp:
