@@ -13,124 +13,178 @@ param appName string = uniqueString(resourceGroup().id)
 @description('The runtime stack of web app')
 param linuxFxVersion string = 'TOMCAT|9.0-jre8'
 
-var appServicePlanName = toLower('oa-${appName}')
-var webSiteName = toLower('oa-${appName}')
-var appInsightName = toLower('oaappi-${appName}')
-var logAnalyticsName = toLower('oala-${appName}')
-
-resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
-  name: appServicePlanName
+resource serverfarms_ASP_pocjavazone_8c82_name_resource 'Microsoft.Web/serverfarms@2022-03-01' = {
+  name: appName
   location: location
   sku: {
-    name: skuName
+    name: 'S1'
     tier: 'Standard'
     size: 'S1'
     family: 'S'
-    capacity: skuCapacity
+    capacity: 1
   }
   kind: 'linux'
-  tags: {
-    displayName: 'HostingPlan'
-    ProjectName: appName
+  properties: {
+    perSiteScaling: false
+    elasticScaleEnabled: false
+    maximumElasticWorkerCount: 1
+    isSpot: false
+    reserved: true
+    isXenon: false
+    hyperV: false
+    targetWorkerCount: 0
+    targetWorkerSizeId: 0
+    zoneRedundant: false
   }
 }
 
-resource appService 'Microsoft.Web/sites@2020-06-01' = {
-  name: webSiteName
+resource sites_oa921309128_name_resource 'Microsoft.Web/sites@2022-03-01' = {
+  name: appName
   location: location
   kind: 'app,linux'
-  identity: {
-    type: 'SystemAssigned'
-  }
-  tags: {
-    displayName: 'Website'
-    ProjectName: appName
-  }
-  dependsOn: [
-    logAnalyticsWorkspace
-  ]
   properties: {
-    serverFarmId: appServicePlan.id
-    httpsOnly: false
+    enabled: true
+    hostNameSslStates: [
+      {
+        name: '${appName}.azurewebsites.net'
+        sslState: 'Disabled'
+        hostType: 'Standard'
+      }
+      {
+        name: '${appName}.scm.azurewebsites.net'
+        sslState: 'Disabled'
+        hostType: 'Repository'
+      }
+    ]
+    serverFarmId: serverfarms_ASP_pocjavazone_8c82_name_resource.id
+    reserved: true
+    isXenon: false
+    hyperV: false
+    vnetRouteAllEnabled: false
     siteConfig: {
-      linuxFxVersion: linuxFxVersion
+      numberOfWorkers: 1
+      linuxFxVersion: 'TOMCAT|9.0-jre8'
+      acrUseManagedIdentityCreds: false
+      alwaysOn: true
+      http20Enabled: false
+      functionAppScaleLimit: 0
+      minimumElasticInstanceCount: 0
     }
+    scmSiteAlsoStopped: false
+    clientAffinityEnabled: false
+    clientCertEnabled: false
+    clientCertMode: 'Required'
+    hostNamesDisabled: false
+    containerSize: 0
+    dailyMemoryTimeQuota: 0
+    httpsOnly: true
+    redundancyMode: 'None'
+    storageAccountRequired: false
+    keyVaultReferenceIdentity: 'SystemAssigned'
   }
 }
 
-resource appServiceLogging 'Microsoft.Web/sites/config@2020-06-01' = {
-  parent: appService
-  name: 'appsettings'
-  properties: {
-    APPINSIGHTS_INSTRUMENTATIONKEY: appInsights.properties.InstrumentationKey
-  }
-  dependsOn: [
-    appServiceSiteExtension
-  ]
-}
-
-resource appServiceSiteExtension 'Microsoft.Web/sites/siteextensions@2020-06-01' = {
-  parent: appService
-  name: 'Microsoft.ApplicationInsights.AzureWebSites'
-  dependsOn: [
-    appInsights
-  ]
-}
-
-resource appServiceAppSettings 'Microsoft.Web/sites/config@2020-06-01' = {
-  parent: appService
-  name: 'logs'
-  properties: {
-    applicationLogs: {
-      fileSystem: {
-        level: 'Warning'
-      }
-    }
-    httpLogs: {
-      fileSystem: {
-        retentionInMb: 40
-        enabled: true
-      }
-    }
-    failedRequestsTracing: {
-      enabled: true
-    }
-    detailedErrorMessages: {
-      enabled: true
-    }
-  }
-}
-
-resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: appInsightName
+resource sites_oa921309128_name_ftp 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  parent: appName
+  name: 'ftp'
   location: location
-  kind: 'string'
-  tags: {
-    displayName: 'AppInsight'
-    ProjectName: appName
-  }
   properties: {
-    Application_Type: 'web'
-    WorkspaceResourceId: logAnalyticsWorkspace.id
+    allow: true
   }
 }
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
-  name: logAnalyticsName
+resource sites_oa921309128_name_scm 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
+  parent: appName
+  name: 'scm'
   location: location
-  tags: {
-    displayName: 'Log Analytics'
-    ProjectName: appName
-  }
   properties: {
-    sku: {
-      name: 'PerGB2018'
+    allow: true
+  }
+}
+
+resource sites_oa921309128_name_web 'Microsoft.Web/sites/config@2022-03-01' = {
+  parent: appName
+  name: 'web'
+  location: location
+  properties: {
+    numberOfWorkers: 1
+    defaultDocuments: [
+      'Default.htm'
+      'Default.html'
+      'Default.asp'
+      'index.htm'
+      'index.html'
+      'iisstart.htm'
+      'default.aspx'
+      'index.php'
+      'hostingstart.html'
+    ]
+    netFrameworkVersion: 'v4.0'
+    linuxFxVersion: 'TOMCAT|9.0-jre8'
+    requestTracingEnabled: false
+    remoteDebuggingEnabled: false
+    httpLoggingEnabled: false
+    acrUseManagedIdentityCreds: false
+    logsDirectorySizeLimit: 35
+    detailedErrorLoggingEnabled: false
+    publishingUsername: '$oa921309128'
+    scmType: 'None'
+    use32BitWorkerProcess: true
+    webSocketsEnabled: false
+    alwaysOn: true
+    managedPipelineMode: 'Integrated'
+    virtualApplications: [
+      {
+        virtualPath: '/'
+        physicalPath: 'site\\wwwroot'
+        preloadEnabled: true
+      }
+    ]
+    loadBalancing: 'LeastRequests'
+    experiments: {
+      rampUpRules: []
     }
-    retentionInDays: 30
-    features: {
-      searchVersion: 1
-      legacy: 0
-      enableLogAccessUsingOnlyResourcePermissions: true
-    }
+    autoHealEnabled: false
+    vnetRouteAllEnabled: false
+    vnetPrivatePortsCount: 0
+    localMySqlEnabled: false
+    ipSecurityRestrictions: [
+      {
+        ipAddress: 'Any'
+        action: 'Allow'
+        priority: 1
+        name: 'Allow all'
+        description: 'Allow all access'
+      }
+    ]
+    scmIpSecurityRestrictions: [
+      {
+        ipAddress: 'Any'
+        action: 'Allow'
+        priority: 1
+        name: 'Allow all'
+        description: 'Allow all access'
+      }
+    ]
+    scmIpSecurityRestrictionsUseMain: false
+    http20Enabled: false
+    minTlsVersion: '1.2'
+    scmMinTlsVersion: '1.2'
+    ftpsState: 'FtpsOnly'
+    preWarmedInstanceCount: 0
+    functionAppScaleLimit: 0
+    functionsRuntimeScaleMonitoringEnabled: false
+    minimumElasticInstanceCount: 0
+    azureStorageAccounts: {}
+  }
+}
+
+resource sites_oa921309128_name_sites_oa921309128_name_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2022-03-01' = {
+  parent: sites_oa921309128_name_resource
+  name: '${appName}.azurewebsites.net'
+  location: location
+  properties: {
+    siteName: appName
+    hostNameType: 'Verified'
   }
 }
