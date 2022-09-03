@@ -84,24 +84,6 @@ resource sites_oa921309128_name_resource 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource sites_oa921309128_name_ftp 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  parent: sites_oa921309128_name_resource
-  name: 'ftp'
-  location: location
-  properties: {
-    allow: true
-  }
-}
-
-resource sites_oa921309128_name_scm 'Microsoft.Web/sites/basicPublishingCredentialsPolicies@2022-03-01' = {
-  parent: sites_oa921309128_name_resource
-  name: 'scm'
-  location: location
-  properties: {
-    allow: true
-  }
-}
-
 resource sites_oa921309128_name_web 'Microsoft.Web/sites/config@2022-03-01' = {
   parent: sites_oa921309128_name_resource
   name: 'web'
