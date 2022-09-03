@@ -17,11 +17,11 @@ resource serverfarms_ASP_pocjavazone_8c82_name_resource 'Microsoft.Web/serverfar
   name: 'oasp-${appName}'
   location: location
   sku: {
-    name: 'S1'
+    name: skuName
     tier: 'Standard'
     size: 'S1'
     family: 'S'
-    capacity: 1
+    capacity: skuCapacity
   }
   kind: 'linux'
   properties: {
