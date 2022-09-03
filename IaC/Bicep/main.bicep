@@ -184,7 +184,7 @@ resource sites_oa921309128_name_sites_oa921309128_name_azurewebsites_net 'Micros
   name: 'oa-${appName}.azurewebsites.net'
   location: location
   properties: {
-    siteName: appName
+    siteName: 'oa-${appName}'
     hostNameType: 'Verified'
   }
 }
