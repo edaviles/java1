@@ -63,7 +63,7 @@ resource sites_oa921309128_name_resource 'Microsoft.Web/sites@2022-03-01' = {
     vnetRouteAllEnabled: false
     siteConfig: {
       numberOfWorkers: 1
-      linuxFxVersion: 'TOMCAT|9.0-jre8'
+      linuxFxVersion: linuxFxVersion
       acrUseManagedIdentityCreds: false
       alwaysOn: true
       http20Enabled: false
