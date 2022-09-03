@@ -11,7 +11,7 @@ param location string = resourceGroup().location
 param appName string = uniqueString(resourceGroup().id)
 
 @description('The runtime stack of web app')
-param linuxFxVersion string = 'node|14-lts'
+param linuxFxVersion string = 'TOMCAT|9.0-jre8'
 
 var appServicePlanName = toLower('oa-${appName}')
 var webSiteName = toLower('oa-${appName}')
