@@ -8,7 +8,7 @@ param skuCapacity int = 1
 param location string = resourceGroup().location
 
 @description('Name that will be used to build associated artifacts')
-param appName string = uniqueString(resourceGroup().id)
+param appName string = 'poc-javawebapp'
 
 @description('The runtime stack of web app')
 param linuxFxVersion string = 'TOMCAT|9.0-jre8'
