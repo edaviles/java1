@@ -50,4 +50,4 @@ jobs:
           app-name: 'oa01'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0513FB7856834ED488368BAEEF8B4C76 }}
-          package: '*.war'
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/*.war'
