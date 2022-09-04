@@ -27,7 +27,7 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: java-app
+          name: java-webapp.war
           path: '${{ github.workspace }}/target/*.war'
 
   deploy:
@@ -41,7 +41,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: java-app
+          name: java-webapp.war
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -50,4 +50,4 @@ jobs:
           app-name: 'oa01'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0513FB7856834ED488368BAEEF8B4C76 }}
-          package: '${{ github.workspace }}/target/*.war'
+          package: 'java-webapp.war'
